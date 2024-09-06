@@ -37,10 +37,18 @@ app, rt = fast_app(hdrs=hdrs, static_path="public")
 examples = sorted([f.stem for f in Path(__file__).parent.glob("*.py") if f.stem not in ["__init__"]])
 
 
+INTRO = """
+# HTMX examples with FastHTML
+
+Reproduction of HTMX official [examples](https://htmx.org/examples/) in Python with [FastHTML](https://docs.fastht.ml/)
+"""
+
+
 @app.get("/")
 def homepage():
     ls = [get_example(name) for name in examples]
     return Main(
+        Div(INTRO, cls="marked"),
         Table(
             Thead(Tr(Th("Pattern"), Th("Description"))),
             Tbody(tuple(Tr(Td(A(ex.title, href="/" + ex.slug)), Td(ex.desc)) for ex in ls)),

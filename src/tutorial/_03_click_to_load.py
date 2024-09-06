@@ -18,7 +18,7 @@ def contact_table():
 
 @app.get("/contacts")
 def load_contacts(page: int, limit: int = 5):
-    rows = [Tr(Td("Smith"), Td(page * limit + i)) for i in range(limit)]
+    rows = [Tr(Td("Smith"), Td((page - 1) * limit + i)) for i in range(limit)]
     return *rows, make_last_row(page)
 
 

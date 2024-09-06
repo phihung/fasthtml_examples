@@ -11,6 +11,7 @@ from fasthtml.common import (
     A,
     Code,
     Div,
+    Hgroup,
     HighlightJS,
     Iframe,
     Main,
@@ -40,7 +41,9 @@ examples = sorted([f.stem for f in Path(__file__).parent.glob("*.py") if f.stem 
 INTRO = """
 # HTMX examples with FastHTML
 
-Reproduction of HTMX official [examples](https://htmx.org/examples/) in Python with [FastHTML](https://docs.fastht.ml/)
+Reproduction of HTMX official [examples](https://htmx.org/examples/) with Python [FastHTML](https://docs.fastht.ml/).
+
+The code can be found on [GitHub](https://github.com/phihung/fasthtml_examples).
 """
 
 
@@ -116,7 +119,7 @@ class Example:
             content = Div(doc, cls="marked")
 
         return Main(
-            H1(self.title),
+            Hgroup(H1(self.title), P(self.desc)),
             Div(
                 A("Back", href="/"),
                 "|",
@@ -159,7 +162,6 @@ def code_block(module, obj):
 
 
 def start():
-    print("hi")
     serve("tutorial.__init__", app="get_app")
 
 

@@ -1,0 +1,28 @@
+[project]
+name = "tutorial"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "python-fasthtml>=0.5.1",
+]
+
+[project.scripts]
+start_tutorial = "tutorial:start"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "ipykernel>=6.29.5",
+    "pytest-cov>=5.0.0",
+    "pytest>=8.3.2",
+    "ruff>=0.6.3",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"

@@ -1,0 +1,4 @@
+.sesskey
+*.ipynb
+__pycache__
+.venv

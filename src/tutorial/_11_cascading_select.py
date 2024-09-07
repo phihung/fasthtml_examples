@@ -5,21 +5,19 @@ from fasthtml.common import H3, Div, Form, Img, Label, Option, Select, fast_app
 app, rt = fast_app()
 
 
-@app.get("/page")
-def main_page():
+@app.get
+def page():
     return Div(
         H3("Pick A Make/Model"),
         Form(
             Div(
                 Label("Make"),
                 Select(
+                    name="make", hx_get=load_models.rt(sleep=1), hx_target="#models", hx_indicator=".htmx-indicator"
+                )(
                     Option("Audi", value="audi"),
                     Option("Toyota", value="toyota"),
                     Option("BMW", value="bmw"),
-                    name="make",
-                    hx_get="/models?sleep=1",
-                    hx_target="#models",
-                    hx_indicator=".htmx-indicator",
                 ),
             ),
             Div(
@@ -51,7 +49,7 @@ In this example we show how to make the values in one select depend on the value
 To begin we start with a default value for the make select: Audi. We render the model select for this make. We then have the make select trigger a GET to /models to retrieve the models options and target the models select.
 
 Here is the code:
-::main_page::
+::page::
 
 When a request is made to the /models end point, we return the models for that make:
 ::load_models::

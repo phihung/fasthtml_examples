@@ -22,7 +22,7 @@ css = """
     box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
     -webkit-transition: width .6s ease;
     -o-transition: width .6s ease;
-    transition: width .6s ease;
+    transition: width .6s ease !important;
 }
 """
 

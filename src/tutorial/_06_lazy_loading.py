@@ -7,7 +7,7 @@ css = """
   opacity: 0;
 }
 img {
- transition: opacity 300ms ease-in;
+ transition: opacity 300ms ease-in !important;
 }
 """
 

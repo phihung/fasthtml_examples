@@ -7,7 +7,7 @@ css = """\
 
 #toast {
   opacity: 0;
-  transition: opacity 3s ease-out;
+  transition: opacity 3s ease-out !important;
   background: blue;
   color: orange;
 }

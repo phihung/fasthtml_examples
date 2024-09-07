@@ -16,17 +16,14 @@ app, rt = fast_app(hdrs=[Style(css)])
 
 @app.get
 def page():
-    return Div(
+    return Div(cls="container")(
         H3("Signup Form"),
-        NotStr(
-            "Enter an email into the input below and on tab out it will be validated. Only <ins>test@test.com</ins> will pass."
-        ),
+        NotStr("Enter an email and on tab out it will be validated. Only <ins>test@test.com</ins> will pass."),
         Form(
             make_email_field("", error=False, touched=False),
             Div(Label("Name"), Input(name="name")),
             Button("Submit", disabled="", cls="btn primary"),
         ),
-        cls="container",
     )
 
 
@@ -37,14 +34,12 @@ def validate_email(email: str):
 
 
 def make_email_field(value: str, error: bool, touched: bool):
-    return Div(
+    cls = "" if not touched else "error" if error else "valid"
+    return Div(hx_target="this", hx_swap="outerHTML", cls=cls)(
         Label("Email"),
         Input(name="email", hx_post=validate_email.rt(), hx_indicator="#ind", value=value),
         Img(id="ind", src="/img/bars.svg", cls="htmx-indicator"),
         Span("Please enter a valid email address", style="color:red;") if error else None,
-        hx_target="this",
-        hx_swap="outerHTML",
-        cls="" if not touched else "error" if error else "valid",
     )
 
 

@@ -6,14 +6,13 @@ app, rt = fast_app()
 # fmt: off
 @app.get
 def page():
-    return Div(
+    return Div(cls="container overflow-auto")(
         Table(
             Thead(Tr(Th("Name"), Th("ID"))),
             Tbody(load_contacts(page=1)),
-        ),
-        cls="container overflow-auto",
+        )
     )
-# fmt: on
+
 
 
 @app.get("/contacts")
@@ -23,18 +22,13 @@ def load_contacts(page: int, limit: int = 5):
 
 
 def make_last_row(page):
-    return Tr(
-        Td(
-            Button(
-                "Load More Agents...",
-                hx_get=load_contacts.rt(page=page + 1),
-                hx_swap="outerHTML",
-                cls="btn primary",
-            ),
-            colspan="3",
+    return Tr(hx_target="this")(
+        Td(colspan="3")(
+            Button("Load More Agents...",
+                   hx_get=load_contacts.rt(page=page + 1), hx_swap="outerHTML", cls="btn primary"),
         ),
-        hx_target="this",
     )
+# fmt: on
 
 
 DESC = "Demonstrates clicking to load more rows in a table"

@@ -12,16 +12,13 @@ DATA = [
 
 @app.get
 def page():
-    return Div(
+    return Div(cls="container-fluid")(
         Table(
             Thead(Tr(Th("Name"), Th("Email"), Th())),
-            Tbody(
-                *(get_contact(i) for i in range(4)),
-                hx_target="closest tr",
-                hx_swap="outerHTML",
+            Tbody(hx_target="closest tr", hx_swap="outerHTML")(
+                tuple(get_contact(i) for i in range(4)),
             ),
         ),
-        cls="container-fluid",
     )
 
 
@@ -38,16 +35,13 @@ def get_contact(idx: int):
 @app.get("/contact/{idx}/edit")
 def edit_view(idx: int):
     name, email = DATA[idx]
-    return Tr(
+    return Tr(hx_trigger="cancel", hx_get=f"/contact/{idx}", cls="editing")(
         Td(Input(name="name", value=name)),
         Td(Input(name="email", value=email)),
         Td(
             Button("Cancel", hx_get=f"/contact/{idx}", cls="btn secondary"),
             Button("Save", hx_put=f"/contact/{idx}", hx_include="closest tr", cls="btn primary"),
         ),
-        hx_trigger="cancel",
-        hx_get=f"/contact/{idx}",
-        cls="editing",
     )
 
 

@@ -16,11 +16,8 @@ app, rt = fast_app(hdrs=[Style(css)])
 
 @app.get
 def page():
-    return Div(
+    return Div(hx_get=get_content.rt(), hx_trigger="load", cls="container")(
         Img(src="/img/bars.svg", alt="Result loading...", cls="htmx-indicator", width="150"),
-        hx_get=get_content.rt(),
-        hx_trigger="load",
-        cls="container",
     )
 
 

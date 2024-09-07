@@ -50,13 +50,12 @@ The code can be found on [GitHub](https://github.com/phihung/fasthtml_examples).
 @app.get("/")
 def homepage():
     ls = [get_example(name) for name in examples]
-    return Main(
+    return Main(cls="container")(
         Div(INTRO, cls="marked"),
         Table(
             Thead(Tr(Th("Pattern"), Th("Description"))),
             Tbody(tuple(Tr(Td(A(ex.title, href="/" + ex.slug)), Td(ex.desc)) for ex in ls)),
         ),
-        cls="container",
     )
 
 
@@ -118,7 +117,7 @@ class Example:
             doc = re.sub("::([a-zA-Z_0-9\s]+)::", lambda x: code_block(module, x.group(1)), self.doc)
             content = Div(doc, cls="marked")
 
-        return Main(
+        return Main(cls="container")(
             Hgroup(H1(self.title), P(self.desc)),
             Div(
                 A("Back", href="/"),
@@ -129,12 +128,10 @@ class Example:
                 "|",
                 A("Htmx Docs", href=self.htmx_url),
             ),
-            Div(
+            Div(cls="grid")(
                 Div(content, style="height:80vh;overflow:scroll"),
                 Div(P(A("Direct url", href=self.start_url)), Iframe(src=self.start_url, height="500px", width="100%")),
-                cls="grid",
             ),
-            cls="container",
         )
 
     def _fix_url(self):

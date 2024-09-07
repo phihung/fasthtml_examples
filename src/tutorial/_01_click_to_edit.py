@@ -15,27 +15,20 @@ def page():
 
 @app.get("/contact")
 def get_contact():
-    return Div(
+    return Div(hx_target="this", hx_swap="outerHTML", cls="container")(
         Div(P(f"Name : {current.name}")),
         Div(P(f"Email : {current.email}")),
         Button("Click To Edit", hx_get=contact_edit.rt(), cls="btn primary"),
-        hx_target="this",
-        hx_swap="outerHTML",
-        cls="container",
     )
 
 
 @app.get("/contact/edit")
 def contact_edit():
-    return Form(
+    return Form(hx_put=put_contact.rt(), hx_target="this", hx_swap="outerHTML", cls="container")(
         Div(Label("Name"), Input(type="text", name="name", value=current.name)),
         Div(Label("Email"), Input(type="email", name="email", value=current.email)),
         Button("Submit", cls="btn"),
         Button("Cancel", hx_get=get_contact.rt(), cls="btn"),
-        hx_put=put_contact.rt(),
-        hx_target="this",
-        hx_swap="outerHTML",
-        cls="container",
     )
 
 
@@ -50,7 +43,7 @@ DESC = "Demonstrates inline editing of a data object"
 DOC = """
 The click to edit pattern provides a way to offer inline editing of all or part of a record without a page refresh.
 
- - This pattern starts with a UI that shows the details of a contact. The div has a button that will get the editing UI for the contact from /contact/1/edit
+ - This pattern starts with a UI that shows the details of a contact. The div has a button that will get the editing UI for the contact from /contact/edit
 
 ::get_contact::
  
@@ -58,7 +51,7 @@ The click to edit pattern provides a way to offer inline editing of all or part 
 
 ::contact_edit::
 
-The form issues a PUT back to /contact/1, following the usual REST-ful pattern.
+The form issues a PUT back to /contact, following the usual REST-ful pattern.
 
 ::put_contact::
 """

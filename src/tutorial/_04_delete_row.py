@@ -12,10 +12,10 @@ app, rt = fast_app(hdrs=[Style(css)])
 
 @app.get
 def page():
-    return Div(
+    return Div(cls="container overflow-auto")(
         Table(
             Thead(Tr(Th("Name"), Th("Email"), Th())),
-            Tbody(
+            Tbody(hx_confirm="Are you sure?", hx_target="closest tr", hx_swap="outerHTML swap:1s")(
                 Tr(
                     Td("Joe Smith"),
                     Td("joe@smith.org"),
@@ -36,12 +36,8 @@ def page():
                     Td("kim@yee.org"),
                     Td(Button("Delete", hx_delete="/contacts/3", cls="btn secondary")),
                 ),
-                hx_confirm="Are you sure?",
-                hx_target="closest tr",
-                hx_swap="outerHTML swap:1s",
             ),
         ),
-        cls="container overflow-auto",
     )
 
 

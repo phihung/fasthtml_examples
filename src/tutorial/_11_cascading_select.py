@@ -7,14 +7,12 @@ app, rt = fast_app()
 
 @app.get
 def page():
-    return Div(
+    return Div(cls="container")(
         H3("Pick A Make/Model"),
         Form(
             Div(
                 Label("Make"),
-                Select(
-                    name="make", hx_get=load_models.rt(sleep=1), hx_target="#models", hx_indicator=".htmx-indicator"
-                )(
+                Select(name="make", hx_get=models.rt(sleep=1), hx_target="#models", hx_indicator=".htmx-indicator")(
                     Option("Audi", value="audi"),
                     Option("Toyota", value="toyota"),
                     Option("BMW", value="bmw"),
@@ -22,16 +20,15 @@ def page():
             ),
             Div(
                 Label("Model"),
-                Select(load_models("audi"), id="models"),
+                Select(models("audi"), id="models"),
                 Img(width="20", src="/img/bars.svg", cls="htmx-indicator"),
             ),
         ),
-        cls="container",
     )
 
 
 @app.get
-def load_models(make: str, sleep: int = 0):
+def models(make: str, sleep: int = 0):
     time.sleep(sleep)
     cars = {
         "audi": ["A1", "A4", "A6"],
@@ -52,7 +49,7 @@ Here is the code:
 ::page::
 
 When a request is made to the /models end point, we return the models for that make:
-::load_models::
+::models::
 
 And they become available in the model select.
 """

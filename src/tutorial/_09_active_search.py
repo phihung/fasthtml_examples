@@ -12,19 +12,14 @@ def page():
     return Div(
         H3("Search Contacts"),
         Input(
-            type="search",
-            name="query",
-            placeholder="Begin Typing To Search Users...",
-            hx_post=search.rt(),
-            hx_trigger="input changed delay:500ms, search",
-            hx_target="#search-results",
-            hx_indicator=".htmx-indicator",
-            cls="form-control",
+            hx_post=search.rt(), hx_target="#results",
+            hx_trigger="input changed delay:500ms, search", hx_indicator=".htmx-indicator",
+            type="search", name="query", placeholder="Begin Typing To Search Users...",
         ),
         Span(Img(src="/img/bars.svg"), "Searching...", cls="htmx-indicator"),
         Table(
             Thead(Tr(Th("First Name"), Th("Last Name"), Th("Email"))),
-            Tbody(id="search-results"),
+            Tbody(id="results"),
         ),
     )
 # fmt: on

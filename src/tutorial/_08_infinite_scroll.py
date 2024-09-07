@@ -4,8 +4,8 @@ app, rt = fast_app()
 
 
 # fmt: off
-@app.get("/table")
-def contact_table():
+@app.get
+def page():
     return Div(
         Table(
             Thead(Tr(Th("Name"), Th("ID"))),
@@ -16,7 +16,7 @@ def contact_table():
 # fmt: on
 
 
-@app.get("/contacts")
+@app.get
 def load_contacts(page: int, limit: int = 5):
     rows = [Tr(Td("Smith"), Td((page - 1) * limit + i)) for i in range(1, limit)]
     return *rows, make_last_row(page, limit)
@@ -28,7 +28,7 @@ def make_last_row(page, limit):
         Td(page * limit),
         hx_trigger="revealed",
         hx_swap="afterend",
-        hx_get=f"/contacts?page={page + 1}",
+        hx_get=load_contacts.rt(page=page + 1),
     )
 
 

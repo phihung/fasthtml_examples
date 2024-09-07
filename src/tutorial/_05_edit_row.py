@@ -10,8 +10,8 @@ DATA = [
 ]
 
 
-@app.get("/table")
-def contact_table():
+@app.get
+def page():
     return Div(
         Table(
             Thead(Tr(Th("Name"), Th("Email"), Th())),
@@ -25,8 +25,18 @@ def contact_table():
     )
 
 
+@app.get("/contact/{idx}")
+def get_contact(idx: int):
+    name, email = DATA[idx]
+    return Tr(
+        Td(name),
+        Td(email),
+        Td(Button("Edit", hx_get=f"/contact/{idx}/edit", hx_trigger="edit", onclick=JS)),
+    )
+
+
 @app.get("/contact/{idx}/edit")
-def edit_contact(idx: int):
+def edit_view(idx: int):
     name, email = DATA[idx]
     return Tr(
         Td(Input(name="name", value=name)),
@@ -38,16 +48,6 @@ def edit_contact(idx: int):
         hx_trigger="cancel",
         hx_get=f"/contact/{idx}",
         cls="editing",
-    )
-
-
-@app.get("/contact/{idx}")
-def get_contact(idx: int):
-    name, email = DATA[idx]
-    return Tr(
-        Td(name),
-        Td(email),
-        Td(Button("Edit", hx_get=f"/contact/{idx}/edit", hx_trigger="edit", onclick=JS)),
     )
 
 
@@ -88,7 +88,7 @@ htmx.trigger(this, 'edit')
 DESC = "Demonstrates how to edit rows in a table"
 DOC = """
 This example shows how to implement editable rows. First let’s look at the table body:
-::contact_table::
+::page::
 This will tell the requests from within the table to target the closest enclosing row that the request is triggered on and to replace the entire row.
 
 Here is the HTML for a row:
@@ -102,6 +102,6 @@ We then trigger the edit event on the current element, which triggers the htmx r
 Note that if you didn’t care if a user was editing multiple rows, you could omit the hyperscript and custom hx-trigger, and just let the normal click handling work with htmx. You could also implement mutual exclusivity by simply targeting the entire table when the Edit button was clicked. Here we wanted to show how to integrate htmx and JavaScript to solve the problem and narrow down the server interactions a bit, plus we get to use a nice SweetAlert confirm dialog.
 
 Finally, here is what the row looks like when the data is being edited:
-::edit_contact::
+::edit_view::
 Here we have a few things going on: First off the row itself can respond to the cancel event, which will bring back the read-only version of the row. There is a cancel button that allows cancelling the current edit. Finally, there is a save button that issues a PUT to update the contact. Note that there is an hx-include that includes all the inputs in the closest row. Tables rows are notoriously difficult to use with forms due to HTML constraints (you can’t put a form directly inside a tr) so this makes things a bit nicer to deal with.
 """

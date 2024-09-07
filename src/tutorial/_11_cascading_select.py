@@ -30,7 +30,7 @@ def page():
     )
 
 
-@app.get("/models")
+@app.get
 def load_models(make: str, sleep: int = 0):
     time.sleep(sleep)
     cars = {

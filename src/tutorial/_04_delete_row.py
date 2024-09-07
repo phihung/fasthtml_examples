@@ -3,15 +3,15 @@ from fasthtml.common import Button, Div, Style, Table, Tbody, Td, Th, Thead, Tr,
 css = """\
 tr.htmx-swapping td {
   opacity: 0;
-  transition: opacity 1s ease-out;
+  transition: opacity 1s ease-out !important;
 }
 """
 
 app, rt = fast_app(hdrs=[Style(css)])
 
 
-@app.get("/table")
-def contact_table():
+@app.get
+def page():
     return Div(
         Table(
             Thead(Tr(Th("Name"), Th("Email"), Th())),
@@ -19,22 +19,22 @@ def contact_table():
                 Tr(
                     Td("Joe Smith"),
                     Td("joe@smith.org"),
-                    Td(Button("Delete", hx_delete="/contacts/0", cls="btn danger")),
+                    Td(Button("Delete", hx_delete="/contacts/0", cls="btn secondary")),
                 ),
                 Tr(
                     Td("Angie MacDowell"),
                     Td("angie@macdowell.org"),
-                    Td(Button("Delete", hx_delete="/contacts/1", cls="btn danger")),
+                    Td(Button("Delete", hx_delete="/contacts/1", cls="btn secondary")),
                 ),
                 Tr(
                     Td("Fuqua Tarkenton"),
                     Td("fuqua@tarkenton.org"),
-                    Td(Button("Delete", hx_delete="/contacts/2", cls="btn danger")),
+                    Td(Button("Delete", hx_delete="/contacts/2", cls="btn secondary")),
                 ),
                 Tr(
                     Td("Kim Yee"),
                     Td("kim@yee.org"),
-                    Td(Button("Delete", hx_delete="/contacts/3", cls="btn danger")),
+                    Td(Button("Delete", hx_delete="/contacts/3", cls="btn secondary")),
                 ),
                 hx_confirm="Are you sure?",
                 hx_target="closest tr",
@@ -45,8 +45,8 @@ def contact_table():
     )
 
 
-@app.delete("/contacts/{idx}")
-def delete_contact(idx: int):
+@rt("/contacts/{idx}")
+def delete(idx: int):
     # Delete actual data here
     return None
 
@@ -74,7 +74,7 @@ Each row has a button with a hx-delete attribute containing the url on which to 
 Tr(
     Td("Angie MacDowell"),
     Td("angie@macdowell.org"),
-    Td(Button("Delete", hx_delete="/contacts/1", cls="btn danger")),
+    Td(Button("Delete", hx_delete="/contacts/1", cls="btn secondary")),
 )
 ```
 """

@@ -4,8 +4,8 @@ app, rt = fast_app()
 
 
 # fmt: off
-@app.get("/table")
-def contact_table():
+@app.get
+def page():
     return Div(
         Table(
             Thead(Tr(Th("Name"), Th("ID"))),
@@ -27,7 +27,7 @@ def make_last_row(page):
         Td(
             Button(
                 "Load More Agents...",
-                hx_get=f"/contacts?page={page + 1}",
+                hx_get=load_contacts.rt(page=page + 1),
                 hx_swap="outerHTML",
                 cls="btn primary",
             ),

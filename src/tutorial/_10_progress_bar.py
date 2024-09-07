@@ -31,51 +31,51 @@ app, rt = fast_app(hdrs=[Style(css)])
 current = 1
 
 
-@app.get("/page")
-def main_page():
+@app.get
+def page():
     return Div(
         H3("Start Progress"),
-        Button("Start Job", hx_post="/start", cls="btn primary"),
+        Button("Start Job", hx_post=start.rt(), cls="btn primary"),
         hx_target="this",
         hx_swap="outerHTML",
     )
 
 
-@app.post("/start")
-def start_job():
+@app.post
+def start():
     global current
     current = 1
     return Div(
         H3("Running", role="status", id="pblabel", tabindex="-1", autofocus=""),
         Div(
             get_progress(),
-            hx_get="/job/progress",
+            hx_get=get_progress.rt(),
             hx_trigger="every 600ms",
             hx_target="this",
             hx_swap="innerHTML",
         ),
         hx_trigger="done",
-        hx_get="/job",
+        hx_get=job_finished.rt(),
         hx_swap="outerHTML",
         hx_target="this",
     )
 
 
-@app.get("/job/progress")
+@app.get
 def get_progress():
     global current
     if current <= 100:
-        current += 10
-        return Div(Div(style=f"width:{current - 10}%", cls="progress-bar"), cls="progress")
+        current += 20
+        return Div(Div(style=f"width:{current - 20}%", cls="progress-bar"), cls="progress")
     return HttpHeader("HX-Trigger", "done")
 
 
-@app.get("/job")
-def view_completed():
+@app.get
+def job_finished():
     return Div(
         H3("Complete", role="status", id="pblabel", tabindex="-1", autofocus=""),
         Div(Div(style="width:100%", cls="progress-bar"), cls="progress"),
-        Button("Restart Job", hx_post="/start", cls="btn primary show"),
+        Button("Restart Job", hx_post=start.rt(), cls="btn primary show"),
         hx_swap="outerHTML",
         hx_target="this",
     )
@@ -86,9 +86,9 @@ DOC = """
 This example shows how to implement a smoothly scrolling progress bar.
 
 We start with an initial state with a button that issues a POST to /start to begin the job:
-::main_page::
+::page::
 This progress bar is updated every 600 milliseconds, with the “width” style attribute and aria-valuenow attributed set to current progress value. Because there is an id on the progress bar div, htmx will smoothly transition between requests by settling the style attribute into its new value. This, when coupled with CSS transitions, makes the visual transition continuous rather than jumpy.
-::start_job get_progress::
+::start get_progress::
 Finally, when the process is complete, a server returns HX-Trigger: done header, which triggers an update of the UI to “Complete” state with a restart button added to the UI:
-::view_completed::
+::job_finished::
 """

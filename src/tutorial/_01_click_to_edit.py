@@ -8,33 +8,38 @@ Contact = namedtuple("Contact", ["name", "email"])
 current = Contact("Joe", "joe@blow.com")
 
 
-@app.get("/contact/1")
+@app.get
+def page():
+    return get_contact()
+
+
+@app.get("/contact")
 def get_contact():
     return Div(
         Div(P(f"Name : {current.name}")),
         Div(P(f"Email : {current.email}")),
-        Button("Click To Edit", hx_get="/contact/1/edit", cls="btn primary"),
+        Button("Click To Edit", hx_get=contact_edit.rt(), cls="btn primary"),
         hx_target="this",
         hx_swap="outerHTML",
         cls="container",
     )
 
 
-@app.get("/contact/1/edit")
+@app.get("/contact/edit")
 def contact_edit():
     return Form(
         Div(Label("Name"), Input(type="text", name="name", value=current.name)),
         Div(Label("Email"), Input(type="email", name="email", value=current.email)),
         Button("Submit", cls="btn"),
-        Button("Cancel", hx_get="/contact/1", cls="btn"),
-        hx_put="/contact/1",
+        Button("Cancel", hx_get=get_contact.rt(), cls="btn"),
+        hx_put=put_contact.rt(),
         hx_target="this",
         hx_swap="outerHTML",
         cls="container",
     )
 
 
-@app.put("/contact/1")
+@app.put("/contact")
 def put_contact(c: Contact):
     global current
     current = c

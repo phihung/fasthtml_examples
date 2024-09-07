@@ -16,9 +16,10 @@ css = """\
 app, rt = fast_app(hdrs=[Style(css)])
 
 
-@app.get("/users")
-def list_users():
-    return Form(
+@app.get
+def page():
+    # Bug with default enctype: multipart/form-data
+    return Form(enctype="", hx_post=update.rt(), hx_swap="outerHTML settle:3s", hx_target="#toast", cls="container")(
         Table(
             Thead(Tr(Th("Name"), Th("Email"), Th("Active"))),
             Tbody(
@@ -30,17 +31,11 @@ def list_users():
         ),
         Button("Bulk Update", cls="btn primary"),
         Div(id="toast"),
-        # Bug with default enctype: multipart/form-data
-        enctype="",
-        hx_post="/users",
-        hx_swap="outerHTML settle:3s",
-        hx_target="#toast",
-        cls="container",
     )
 
 
 @app.post("/users")
-def bulk_update(x: dict):
+def update(x: dict):
     n = len(x)
     return Div(f"Activated {n} and deactivated {4-n} users", id="toast", aria_live="polite")
 
@@ -54,5 +49,5 @@ The server will bulk-update the statuses based on the values of the checkboxes. 
 The cool thing is that, because HTML form inputs already manage their own state, we don’t need to re-render any part of the users table. The active users are already checked and the inactive ones unchecked!
 
 You can see a working example of this code below.
-::list_users bulk_update::
+::page update::
 """

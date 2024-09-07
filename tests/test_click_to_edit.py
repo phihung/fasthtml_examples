@@ -12,12 +12,12 @@ def test_app():
         assert c.name in r.text
         assert c.email in r.text
 
-    r = client.get("/contact/1")
+    r = client.get("/contact")
     check(r)
 
-    r = client.get("/contact/1/edit")
+    r = client.get("/contact/edit")
     check(r)
 
-    r = client.put("/contact/1", data={"name": "AAA", "email": "BB"})
+    r = client.put("/contact", data={"name": "AAA", "email": "BB"})
     check(r)
     assert module.current.name == "AAA"

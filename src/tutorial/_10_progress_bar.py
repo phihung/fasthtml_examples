@@ -9,7 +9,7 @@ css = """
     border-radius: 4px;
     box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
 }
-.progress-bar {
+.progressbar {
     float: left;
     width: 0%;
     height: 100%;
@@ -56,7 +56,9 @@ def progress_bar():
     global current
     if current <= 100:
         current += 20
-        return Div(Div(style=f"width:{current - 20}%", cls="progress-bar"), cls="progress")
+        return Div(cls="progress")(
+            Div(style=f"width:{current - 20}%", id="THIS_ID_IS_INDISPENSIBLE", cls="progressbar"),
+        )
     return HttpHeader("HX-Trigger", "done")
 
 
@@ -64,7 +66,7 @@ def progress_bar():
 def job_finished():
     return Div(hx_swap="outerHTML", hx_target="this")(
         H3("Complete", role="status", id="pblabel", tabindex="-1", autofocus=""),
-        Div(Div(style="width:100%", cls="progress-bar"), cls="progress"),
+        Div(Div(style="width:100%", id="THIS_ID_IS_INDISPENSIBLE", cls="progressbar"), cls="progress"),
         Button("Restart Job", hx_post=start.rt(), cls="btn primary show"),
     )
 

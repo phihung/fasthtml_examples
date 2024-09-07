@@ -9,12 +9,12 @@ WORKDIR /app
 ADD uv.lock /app/uv.lock
 ADD pyproject.toml /app/pyproject.toml
 
-RUN uv sync --frozen --no-install-project
+RUN uv sync --no-dev --frozen --no-install-project
 
 COPY --chown=user public ./public
 COPY --chown=user src ./src
 RUN touch README.md
 
-RUN uv sync --frozen
+RUN uv sync --no-dev --frozen 
 
-CMD ["uv", "run", "start_tutorial"]
+CMD [".venv/bin/start_tutorial"]

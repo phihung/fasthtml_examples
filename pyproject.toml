@@ -21,6 +21,7 @@ dev-dependencies = [
     "lxml>=5.3.0",
     "pandas>=2.2.2",
     "pytest-cov>=5.0.0",
+    "pytest-playwright>=0.5.2",
     "pytest>=8.3.2",
     "ruff>=0.6.3",
 ]
@@ -28,3 +29,6 @@ dev-dependencies = [
 [tool.ruff]
 line-length = 120
 target-version = "py311"
+
+[tool.pytest.ini_options]
+addopts = "--base-url http://0.0.0.0:5001"

@@ -13,17 +13,20 @@ from fasthtml.common import (
     Div,
     Hgroup,
     HighlightJS,
+    Html,
     Iframe,
     Main,
     MarkdownJS,
     P,
     Pre,
     Script,
+    Socials,
     Table,
     Tbody,
     Td,
     Th,
     Thead,
+    Title,
     Tr,
     fast_app,
     serve,
@@ -32,6 +35,14 @@ from fasthtml.common import (
 hdrs = (
     MarkdownJS(),
     HighlightJS(langs=["python", "javascript", "html", "css"]),
+    *Socials(
+        title="HTMX examples with FastHTML",
+        description="Reproduction of HTMX official examples with Python FastHTML",
+        site_name="phihung-htmx-examples.hf.space",
+        twitter_site="@hunglp",
+        image="/social.png",
+        url="https://phihung-htmx-examples.hf.space",
+    ),
 )
 app, rt = fast_app(hdrs=hdrs, static_path="public")
 
@@ -50,11 +61,14 @@ The code can be found on [GitHub](https://github.com/phihung/fasthtml_examples).
 @app.get("/")
 def homepage():
     ls = [get_example(name) for name in examples]
-    return Main(cls="container")(
-        Div(INTRO, cls="marked"),
-        Table(
-            Thead(Tr(Th("Pattern"), Th("Description"))),
-            Tbody(tuple(Tr(Td(A(ex.title, href="/" + ex.slug)), Td(ex.desc)) for ex in ls)),
+    return (
+        Title("HTMX examples with FastHTML"),
+        Main(cls="container")(
+            Div(INTRO, cls="marked"),
+            Table(
+                Thead(Tr(Th("Pattern"), Th("Description"))),
+                Tbody(tuple(Tr(Td(A(ex.title, href="/" + ex.slug)), Td(ex.desc)) for ex in ls)),
+            ),
         ),
     )
 

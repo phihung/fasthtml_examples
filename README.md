@@ -21,7 +21,6 @@ Run
 
 ```bash
 # Local
-uv sync
 uv run start_tutorial
 
 # Docker
@@ -33,5 +32,6 @@ docker run --rm -p 5001:5001 -it htmx_examples
 
 ```bash
 uv sync
+uv run playwright install
 uv run pytest
 ```

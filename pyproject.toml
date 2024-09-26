@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "python-fasthtml>=0.5.1",
+    "python-fasthtml>=0.6.8",
 ]
 
 [project.scripts]

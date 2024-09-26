@@ -134,12 +134,12 @@ class Example:
         return Main(cls="container")(
             Hgroup(H1(self.title), P(self.desc)),
             Div(
-                A("Back", href="/"),
-                "|",
+                A("HOME", href="/"),
+                " | ",
                 A("Explain", href=f"/{self.slug}?tab=explain"),
-                "|",
+                " | ",
                 A("Code", href=f"/{self.slug}?tab=code"),
-                "|",
+                " | ",
                 A("Htmx Docs", href=self.htmx_url),
             ),
             Div(cls="grid")(

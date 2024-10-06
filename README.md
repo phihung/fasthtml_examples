@@ -22,7 +22,7 @@ Run
 ```bash
 # Local
 uv sync
-uv run start_tutorial
+uv run fh_utils dev src/tutorial --app get_app --factory --live
 
 # Docker
 docker build -t htmx_examples .

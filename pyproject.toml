@@ -4,9 +4,7 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = [
-    "python-fasthtml>=0.6.8",
-]
+dependencies = ["fh-utils>=0.4.0", "python-fasthtml>=0.6.8"]
 
 [project.scripts]
 start_tutorial = "tutorial:start"
@@ -24,7 +22,12 @@ dev-dependencies = [
     "pytest-playwright>=0.5.2",
     "pytest>=8.3.2",
     "ruff>=0.6.3",
+    "devicorn",
 ]
+
+[tool.uv.sources]
+# fh-utils = { path = "../fh_utils", editable = true }
+devicorn = { path = "../devicorn", editable = true }
 
 [tool.ruff]
 line-length = 120

@@ -27,8 +27,7 @@ def contact_edit():
     return Form(hx_put=put_contact.rt(), hx_target="this", hx_swap="outerHTML", cls="container")(
         Div(Label("Name"), Input(type="text", name="name", value=current.name)),
         Div(Label("Email"), Input(type="email", name="email", value=current.email)),
-        Button("Submit", cls="btn"),
-        Button("Cancel", hx_get=get_contact.rt(), cls="btn"),
+        Div(Button("Submit"), Button("Cancel", hx_get=get_contact.rt()), cls="grid"),
     )
 
 

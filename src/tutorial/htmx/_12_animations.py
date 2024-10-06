@@ -119,7 +119,7 @@ htmx is designed to allow you to use CSS transitions to add smooth animations an
 htmx also allows you to use the new View Transitions API for creating animations.
 
 <blockquote>
-We have use <code>!important</code> in css to bypass <code>(prefers-reduced-motion: reduce)</code> setup by picocss
+We have to use <code>!important</code> in css to bypass <code>(prefers-reduced-motion: reduce)</code> setup by picocss
 </blockquote>
 
 ### Basic CSS Animations

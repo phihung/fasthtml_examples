@@ -1,6 +1,6 @@
 from starlette.testclient import TestClient
 
-from tutorial import _01_click_to_edit as module
+from tutorial.htmx import _01_click_to_edit as module
 
 
 def test_app():

@@ -6,7 +6,7 @@ from starlette.testclient import TestClient
 
 from tutorial import get_app, get_example
 
-EXAMPLES = [f.stem for f in Path("src/tutorial").glob("*.py") if f.stem not in ["__init__"]]
+EXAMPLES = [f.stem for f in Path("src/tutorial/htmx").glob("*.py") if f.stem not in ["__init__"]]
 
 
 @pytest.mark.parametrize("example", EXAMPLES)
@@ -34,7 +34,7 @@ def test_start_url(client, example):
     r = client.get(m.start_url)
     assert r.status_code == 200
     print(r.text)
-    assert "<html>" in r.text
+    assert "<html" in r.text
 
 
 @pytest.fixture

@@ -1,8 +1,9 @@
 import importlib
+from dataclasses import dataclass
 from pathlib import Path
 
 import fasthtml.common as fh
-from fasthtml.common import A, Div, Table, Tbody, Td, Th, Thead, Tr
+from fasthtml.common import H4, A, Div, Pre, Table, Tbody, Td, Th, Thead, Tr
 
 from tutorial import utils
 from tutorial.example import Example
@@ -10,27 +11,23 @@ from tutorial.example import Example
 hdrs = (
     fh.MarkdownJS(),
     utils.HighlightJS(langs=["python", "javascript", "html", "css"]),
-    *fh.Socials(
-        title="HTMX examples with FastHTML",
-        description="Reproduction of HTMX official examples with Python FastHTML",
-        site_name="phihung-htmx-examples.hf.space",
-        twitter_site="@hunglp",
-        image="/social.png",
-        url="https://phihung-htmx-examples.hf.space",
-    ),
+    utils.social_card(),
     utils.alpine(),
+    fh.Script(src="/script.js"),
+    fh.Script("init_main_page()"),
 )
 html_kv = {
-    "x-data": "{darkMode: localStorage.getItem('darkMode') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')}",
-    "x-init": "$watch('darkMode', val => localStorage.setItem('darkMode', val))",
+    "x-data": """{
+        showRequests: localStorage.getItem('showRequests') == 'true',
+        darkMode: localStorage.getItem('darkMode') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    }""",
+    "x-init": "$watch('darkMode', val => localStorage.setItem('darkMode', val));$watch('showRequests', val => localStorage.setItem('showRequests', val))",
     "x-bind:data-theme": "darkMode !== 'system'? darkMode : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')",
 }
 
 app, rt = fh.fast_app(hdrs=hdrs, static_path="public", htmlkw=html_kv, surreal=False)
 
 htmx_examples = sorted([f.stem for f in Path(__file__).parent.glob("htmx/*.py") if f.stem not in ["__init__"]])
-
-
 INTRO = """
 # HTMX examples with FastHTML
 
@@ -58,6 +55,26 @@ def homepage():
                 Thead(Tr(Th("Pattern"), Th("Description"))),
                 Tbody(tuple(Tr(Td(A(ex.title, href="/" + ex.slug)), Td(ex.desc)) for ex in ls)),
             ),
+        ),
+    )
+
+
+@dataclass
+class RequestInfo:
+    verb: str
+    path: str
+    parameters: str
+    headers: str
+    response: str
+
+
+@app.put("/requests")
+def requests(r: RequestInfo):
+    return Div(**{"x-data": "{show: false}", "@click": "show = !show"})(
+        H4(x_text="(show?'▽':'▶') + ' " + r.verb.upper() + " " + r.path + "'"),
+        Div(**{"x-show": "show"})(
+            Div(Pre("Input: " + r.parameters)),
+            Div(Pre(r.response or "(empty response)"), style="max-height:150px;overflow:scroll;"),
         ),
     )
 

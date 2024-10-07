@@ -29,7 +29,7 @@ def page():
 
 @app.post("/contact/email")
 def validate_email(email: str):
-    time.sleep(2)
+    time.sleep(1)
     return make_email_field(email, email != "test@test.com", True)
 
 
@@ -37,7 +37,7 @@ def make_email_field(value: str, error: bool, touched: bool):
     cls = "" if not touched else "error" if error else "valid"
     return Div(hx_target="this", hx_swap="outerHTML", cls=cls)(
         Label("Email"),
-        Input(name="email", hx_post=validate_email.rt(), hx_indicator="#ind", value=value),
+        Input(name="email", hx_post=validate_email, hx_indicator="#ind", value=value),
         Img(id="ind", src="/img/bars.svg", cls="htmx-indicator"),
         Span("Please enter a valid email address", style="color:red;") if error else None,
     )
@@ -57,3 +57,4 @@ When a request occurs, it will return a partial to replace the outer div. It mig
 This form can be lightly styled with this CSS to give better visual feedback.
 ::css::
 """
+HEIGHT = "400px"

@@ -12,7 +12,7 @@ def page():
     return Div(
         H3("Search Contacts"),
         Input(
-            hx_post=search.rt(), hx_target="#results",
+            hx_post=search, hx_target="#results",
             hx_trigger="input changed delay:500ms, search", hx_indicator=".htmx-indicator",
             type="search", name="query", placeholder="Begin Typing To Search Users...",
         ),

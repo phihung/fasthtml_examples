@@ -35,7 +35,7 @@ current = 1
 def page():
     return Div(hx_target="this", hx_swap="outerHTML")(
         H3("Start Progress"),
-        Button("Start Job", hx_post=start.rt(), cls="btn primary"),
+        Button("Start Job", hx_post=start, cls="btn primary"),
     )
 
 
@@ -43,9 +43,9 @@ def page():
 def start():
     global current
     current = 1
-    return Div(hx_trigger="done", hx_get=job_finished.rt(), hx_swap="outerHTML", hx_target="this")(
+    return Div(hx_trigger="done", hx_get=job_finished, hx_swap="outerHTML", hx_target="this")(
         H3("Running", role="status", id="pblabel", tabindex="-1", autofocus=""),
-        Div(hx_get=progress_bar.rt(), hx_trigger="every 600ms", hx_target="this", hx_swap="innerHTML")(
+        Div(hx_get=progress_bar, hx_trigger="every 600ms", hx_target="this", hx_swap="innerHTML")(
             progress_bar(),
         ),
     )
@@ -67,7 +67,7 @@ def job_finished():
     return Div(hx_swap="outerHTML", hx_target="this")(
         H3("Complete", role="status", id="pblabel", tabindex="-1", autofocus=""),
         Div(Div(style="width:100%", id="THIS_ID_IS_INDISPENSIBLE", cls="progressbar"), cls="progress"),
-        Button("Restart Job", hx_post=start.rt(), cls="btn primary show"),
+        Button("Restart Job", hx_post=start, cls="btn primary show"),
     )
 
 
@@ -82,3 +82,4 @@ This progress bar is updated every 600 milliseconds, with the “width” style 
 Finally, when the process is complete, a server returns HX-Trigger: done header, which triggers an update of the UI to “Complete” state with a restart button added to the UI:
 ::job_finished::
 """
+HEIGHT = "200px"

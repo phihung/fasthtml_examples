@@ -53,3 +53,4 @@ When a request is made to the /models end point, we return the models for that m
 
 And they become available in the model select.
 """
+HEIGHT = "300px"

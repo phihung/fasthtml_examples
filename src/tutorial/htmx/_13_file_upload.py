@@ -21,10 +21,10 @@ def method1():
         htmx.find('#progress').setAttribute('value', evt.detail.loaded/evt.detail.total * 100)
     });
     """
-    form = Form(hx_target="#output", hx_post=upload.rt(), id="form")(
+    form = Form(hx_target="#output", hx_post=upload, id="form")(
         Input(type="file", name="file"),
         Button("Upload"),
-        Progress(id="progress", value="0", max="100"),
+        Progress(id="progress", value="0", max="100", style="margin-top:20px"),
         Div(id="output"),
     )
     return form, Script(js)
@@ -33,10 +33,10 @@ def method1():
 @app.get
 def method2():
     script = "on htmx:xhr:progress(loaded, total) set #progress2.value to (loaded/total)*100"
-    return Form(_=script, hx_target="#output2", hx_post=upload.rt())(
+    return Form(_=script, hx_target="#output2", hx_post=upload)(
         Input(type="file", name="file"),
         Button("Upload"),
-        Progress(id="progress2", value="0", max="100"),
+        Progress(id="progress2", value="0", max="100", style="margin-top:20px"),
         Div(id="output2"),
     )
 

@@ -38,7 +38,7 @@ def edit_view(idx: int):
     return Tr(hx_trigger="cancel", hx_get=f"/contact/{idx}", cls="editing")(
         Td(Input(name="name", value=name)),
         Td(Input(name="email", value=email)),
-        Td(
+        Td(cls="grid")(
             Button("Cancel", hx_get=f"/contact/{idx}", cls="btn secondary"),
             Button("Save", hx_put=f"/contact/{idx}", hx_include="closest tr", cls="btn primary"),
         ),

@@ -80,7 +80,7 @@ def demo1(idx: int = 0):
 
 @app.get
 def demo2():
-    return Button("Fade Me Out", cls="fade-me-out", hx_delete=demo2_delete.rt(), hx_swap="outerHTML swap:2s")
+    return Button("Fade Me Out", cls="fade-me-out", hx_delete=demo2_delete, hx_swap="outerHTML swap:2s")
 
 
 @app.delete
@@ -90,12 +90,12 @@ def demo2_delete():
 
 @app.get
 def demo3():
-    return Button("Fade Me In", hx_get=demo3.rt(), hx_swap="outerHTML settle:1s", id="demo3")
+    return Button("Fade Me In", hx_get=demo3, hx_swap="outerHTML settle:1s", id="demo3")
 
 
 @app.get
 def demo4():
-    return Form(hx_post=demo4_form.rt(), hx_swap="outerHTML")(
+    return Form(hx_post=demo4_form, hx_swap="outerHTML")(
         Input(name="name", placeholder="Your name here..."), Button("Submit", cls="btn primary")
     )
 
@@ -164,3 +164,4 @@ TODO
 ### Conclusion
 You can use the techniques above to create quite a few interesting and pleasing effects with plain old HTML while using htmx.
 """
+HEIGHT = "300px"

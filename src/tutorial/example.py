@@ -6,7 +6,7 @@ from pathlib import Path
 from types import ModuleType
 
 import fasthtml.common as fh
-from fasthtml.common import H1, A, Code, Div, Hgroup, P, Pre
+from fasthtml.common import H1, H3, A, Code, Div, Hgroup, P, Pre
 
 from tutorial import utils
 
@@ -29,6 +29,10 @@ class Example:
         return self.module.DOC
 
     @cached_property
+    def height(self):
+        return getattr(self.module, "HEIGHT", "500px")
+
+    @cached_property
     def slug(self):
         return self.name.replace("_", "-")
 
@@ -44,9 +48,8 @@ class Example:
 
     def create_routes(self, main_app: fh.FastHTML):
         sub_app, slug = self.module.app, self.slug
-        self._fix_url()
         sub_app.htmlkw = main_app.htmlkw
-        sub_app.hdrs.append(utils.alpine())
+        sub_app.hdrs += (utils.alpine(), fh.Script(src="/script.js"), fh.Script(f"init_sub_page('{slug}')"))
         main_app.mount(f"/{slug}", sub_app)
         main_app.get(f"/{slug}")(self.main_page)
 
@@ -60,7 +63,7 @@ class Example:
             doc = _replace_code_blocks(module, self.doc)
             content = Div(doc, cls="marked")
 
-        return fh.Main(cls="container")(
+        return fh.Main(cls="container", x_cloak=True)(
             Hgroup(H1(self.title), P(self.desc)),
             Div(
                 *utils.concat(
@@ -72,23 +75,19 @@ class Example:
                 )
             ),
             Div(cls="grid")(
-                Div(content, style="height:80vh;overflow:scroll"),
+                Div(content, style="max-height:80vh;overflow:scroll"),
                 Div(
-                    fh.Iframe(src=self.start_url, height="500px", width="100%"),
+                    Div(cls="grid")(
+                        fh.Label(fh.Input(type="checkbox", role="switch", x_model="showRequests"), "Show requests"),
+                    ),
+                    Div(fh.Iframe(src=self.start_url, height=self.height, width="100%")),
+                ),
+                Div(**{"x-show": "showRequests"})(
+                    H3("Server Calls"),
+                    Div(Div(id="request-list"), style="height:80vh;overflow:scroll"),
                 ),
             ),
         )
-
-    def _fix_url(self):
-        sub_app, slug = self.module.app, self.slug
-        code = f"""
-        document.addEventListener('htmx:configRequest', (event) => {{
-            if (!event.detail.path.startsWith('/{slug}')) {{
-                event.detail.path = `/{slug}${{event.detail.path}}`
-            }}
-        }})
-        """
-        sub_app.hdrs.append(fh.Script(code))
 
 
 def _replace_code_blocks(module, doc):

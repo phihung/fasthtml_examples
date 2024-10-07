@@ -18,8 +18,7 @@ app, rt = fast_app(hdrs=[Style(css)])
 
 @app.get
 def page():
-    # Bug with default enctype: multipart/form-data
-    return Form(enctype="", hx_post=update.rt(), hx_swap="outerHTML settle:3s", hx_target="#toast", cls="container")(
+    return Form(hx_post=update, hx_swap="outerHTML settle:3s", hx_target="#toast", cls="container")(
         Table(
             Thead(Tr(Th("Name"), Th("Email"), Th("Active"))),
             Tbody(
@@ -51,3 +50,4 @@ The cool thing is that, because HTML form inputs already manage their own state,
 You can see a working example of this code below.
 ::page update::
 """
+HEIGHT = "300px"

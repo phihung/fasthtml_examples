@@ -49,7 +49,12 @@ class Example:
     def create_routes(self, main_app: fh.FastHTML):
         sub_app, slug = self.module.app, self.slug
         sub_app.htmlkw = main_app.htmlkw
-        sub_app.hdrs += (utils.alpine(), fh.Script(src="/script.js"), fh.Script(f"init_sub_page('{slug}')"))
+        sub_app.hdrs += (
+            utils.alpine(),
+            fh.Script(src="/script.js"),
+            fh.Script(f"init_sub_page('{slug}')"),
+            utils.piwik(),
+        )
         main_app.mount(f"/{slug}", sub_app)
         main_app.get(f"/{slug}")(self.main_page)
 

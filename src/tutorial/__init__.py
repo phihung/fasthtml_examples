@@ -16,6 +16,7 @@ hdrs = (
     utils.alpine(),
     fh.Script(src="/script.js"),
     fh.Script("init_main_page()"),
+    utils.piwik(),
 )
 html_kv = {
     "x-data": """{
@@ -98,7 +99,7 @@ def get_example(name):
 
 
 def start():
-    fh.serve("tutorial.__init__", app="get_app")
+    fh.serve("tutorial.__init__", app="get_app", reload=False)
 
 
 if __name__ == "__main__":

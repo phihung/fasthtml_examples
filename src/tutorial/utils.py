@@ -56,3 +56,7 @@ def concat(*elts, sep=" | "):
     for elt in elts[1:]:
         out += [sep, elt]
     return out
+
+
+def piwik():
+    return Script(src="piwik.js")

@@ -26,7 +26,6 @@ function init_main_page() {
   window.document.addEventListener(
     "SubappAfterRequest",
     (e) => {
-      // console.log(e);
       htmx.ajax("PUT", "/requests", {
         target: "#request-list",
         values: e.detail,

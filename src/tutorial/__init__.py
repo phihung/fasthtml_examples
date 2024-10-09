@@ -1,4 +1,5 @@
 import importlib
+import json
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -70,10 +71,16 @@ class RequestInfo:
 
 @app.put("/requests")
 def requests(r: RequestInfo):
+    headers = json.loads(r.headers)
+    print(headers)
+    headers = {
+        k: v for k, v in headers.items() if k in ("HX-Trigger", "HX-Trigger-Name", "HX-Target", "HX-Prompt") and v
+    }
     return Div(**{"x-data": "{show: false}", "@click": "show = !show"})(
         H4(x_text="(show?'▽':'▶') + ' " + r.verb.upper() + " " + r.path + "'"),
         Div(**{"x-show": "show"})(
-            Div(Pre("Input: " + r.parameters)),
+            Div(Pre("Input: " + r.parameters)) if r.parameters != "{}" else None,
+            Div(Pre("Headers: " + str(headers))) if headers else None,
             Div(Pre(r.response or "(empty response)"), style="max-height:150px;overflow:scroll;"),
         ),
     )

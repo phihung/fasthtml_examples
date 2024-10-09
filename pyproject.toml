@@ -22,12 +22,12 @@ dev-dependencies = [
     "pytest-playwright>=0.5.2",
     "pytest>=8.3.2",
     "ruff>=0.6.3",
-    "devicorn",
+    # "devicorn",
 ]
 
 [tool.uv.sources]
 # fh-utils = { path = "../fh_utils", editable = true }
-devicorn = { path = "../devicorn", editable = true }
+# devicorn = { path = "../devicorn", editable = true }
 
 [tool.ruff]
 line-length = 120

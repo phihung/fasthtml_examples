@@ -73,7 +73,6 @@ class RequestInfo:
 @app.put("/requests")
 def requests(r: RequestInfo):
     headers = json.loads(r.headers)
-    print(headers)
     headers = {
         k: v for k, v in headers.items() if k in ("HX-Trigger", "HX-Trigger-Name", "HX-Target", "HX-Prompt") and v
     }

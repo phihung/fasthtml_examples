@@ -17,21 +17,24 @@ Visit the site [here](https://phihung-htmx-examples.hf.space)
 
 Github: [link](https://github.com/phihung/fasthtml_examples)
 
-Run
+**Run**
 
 ```bash
-# Local
 uv sync
-uv run fh_utils dev src/tutorial --app get_app --factory --live
+alias tom="uv run tom"
 
-# Docker
-docker build -t htmx_examples .
-docker run --rm -p 5001:5001 -it htmx_examples
+tom dev
 ```
 
-## Dev
+**Dev**
 
 ```bash
-uv sync
-uv run pytest
+# List command
+tom
+
+# Run test
+tom test
+
+# Build and run docker
+tom docker
 ```
